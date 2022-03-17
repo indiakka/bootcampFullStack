@@ -5,18 +5,11 @@ const indice = document.getElementById("indice");
 const form = document.getElementById("form");
 const btnGuardar = document.getElementById("btn-guardar");
 const listaDuenos = document.getElementById("lista-duenos");
+const url = "http://localhost:5000/duenos";
+
 
 let duenos = [
-  {
-    nombre: "Naryie",
-    apellido: "Vasquez",
-    dni: "1234567890j",
-  },
-  {
-    nombre: "Juan David",
-    apellido: "Marín",
-    dni: "1234567899k",
-  },
+  
 ];
 
 function listarDuenos() {
