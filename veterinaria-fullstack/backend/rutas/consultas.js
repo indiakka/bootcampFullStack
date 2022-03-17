@@ -1,4 +1,4 @@
-module.exports = function consultasHandler(consultas) {
+module.exports = function consultasHandler({consultas, mascotas, veterinarias}) {
   return {
     get: (data, callback) => {
       if (typeof data.indice !== "undefined") {
