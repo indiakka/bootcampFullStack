@@ -1,9 +1,11 @@
 const listaConsultas = document.getElementById("lista-consultas");
-const mascota = document.getElementById("mascota");
-const url = "http://localhost:5000/consultas";
+const mascota = document.getElementById( "mascota" );
+const veterinaria = document.getElementById("veterinaria");
+const url = "http://localhost:5000";
 
 let consultas = [];
 let mascotas = [];
+let veterinarias =[]
 
 async function listarConsultas() {
   const entidad = "consultas";
@@ -61,30 +63,43 @@ async function listarMascotas() {
       mascotas = mascotasDelServidor;
     }
     if (respuesta.ok) {
-      const htmlMascotas = mascotas
-        .forEach((_mascota, indice) => {
-          const optionActual = document.createElement("option");
-          optionActual.innerHTML = _mascota.nombre;
-          optionActual.value = indice;
-          mascota.appendChild(optionActual); // appendChild añade un nodo como el último hijo de un nodo
-        })
-     
-      mascota.innerHTML += htmlMascotas;
-      Array.from(document.getElementsByClassName("editar")).forEach(
-        (botonEditar, index) => (botonEditar.onclick = editar(index))
-      );
-      Array.from(document.getElementsByClassName("eliminar")).forEach(
-        (botonEliminar, index) => (botonEliminar.onclick = eliminar(index))
-      );
-      return;
+      const htmlMascotas = mascotas.forEach((_mascota, indice) => {
+        const optionActual = document.createElement("option");
+        optionActual.innerHTML = _mascota.nombre;
+        optionActual.value = indice;
+        mascota.appendChild(optionActual); // appendChild añade un nodo como el último hijo de un nodo
+      });
     }
-    listaDuenos.innerHTML = `<tr>
-        <td colspan="5" class="lista-vacia">No hay duen@s</td>
-      </tr>`;
   } catch (error) {
     throw error;
   }
 }
+
+listarMascotas()
+
+async function listarVeterinarias() {
+  const entidad = "veterinarias";
+  try {
+    const respuesta = fetch(url);
+    const veterinariasDelServidor = await respuesta.json();
+    if (Array.isArray(veterinariasDelServidor)) {
+      veterinarias = veterinariasDelServidor;
+    }
+    if (respuesta.ok) {
+      const htmlVeterinarias = veterinaria.forEach((_veterinaria, indice) => {
+        const optionActual = document.createElement("option");
+        optionActual.innerHTML = `${_veterinaria.nombre} ${_veterinaria.apellido}`;
+        optionActual.value = indice;
+        veterinaria.appendChild(optionActual); // appendChild añade un nodo como el último hijo de un nodo
+      });
+    }
+  } catch (error) {
+    throw error;
+  }
+}
+
+listarVeterinarias() 
+
 
 async function enviarDatos(evento) {
   evento.preventDefault();
