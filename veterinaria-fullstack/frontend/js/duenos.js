@@ -50,24 +50,37 @@ async function listarDuenos() {
   }
 }
 
-function enviarDatos(evento) {
+async function enviarDatos(evento) {
   evento.preventDefault();
-  const datos = {
-    nombre: nombre.value,
-    apellido: apellido.value,
-    dni: dni.value,
-  };
-  const accion = btnGuardar.innerHTML;
-  switch (accion) {
-    case "Editar":
-      duenos[indice.value] = datos;
-      break;
-    default:
-      duenos.push(datos);
-      break;
+  try {
+    const datos = {
+      nombre: nombre.value,
+      apellido: apellido.value,
+      dni: dni.value,
+    };
+    const accion = btnGuardar.innerHTML;
+    let urlEnvio = url;
+    let method = "POST";
+    if (accion === "Editar") {
+      urlEnvio += `/${indice.value}`; //concatena urlenvio + indice.value
+      method = "PUT";
+    }
+    const respuesta = await fetch(urlEnvio, {
+      method,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(datos),
+      mode: "cors",
+    });
+    if (respuesta.ok) {
+      listarDuenos();
+      resetModal();
+    }
+  } catch (error) {
+    console.log({ error });
+    $(".alert").show();
   }
-  listarDuenos();
-  resetModal();
 }
 
 function editar(index) {
@@ -91,13 +104,22 @@ function resetModal() {
 }
 
 function eliminar(index) {
-  return function clickEnEliminar() {
-    duenos = duenos.filter((dueno, indiceDueno) => indiceDueno !== index);
-    listarDuenos();
+  const urlEnvio = `${url}/${index}`;
+  return async function clickEnEliminar() {
+    try {
+      const respuesta = await fetch(urlEnvio, {
+        method: "DELETE",
+        mode: "cors",
+      });
+      if (respuesta.ok) {
+        listarDuenos();
+      }
+    } catch (error) {
+      console.log({ error });
+      $(".alert").show();
+    }
   };
 }
-
-listarDuenos();
 
 form.onsubmit = enviarDatos;
 btnGuardar.onclick = enviarDatos;
