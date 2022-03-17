@@ -7,15 +7,19 @@ const btnGuardar = document.getElementById("btn-guardar");
 const listaDuenos = document.getElementById("lista-duenos");
 const url = "http://localhost:5000/duenos";
 
+let duenos = [];
 
-let duenos = [
-  
-];
-
-function listarDuenos() {
-  const htmlDuenos = duenos
-    .map(
-      (dueno, index) => `<tr>
+async function listarDuenos() {
+  try {
+    const respuesta = await fetch(url);
+    const duenosDelServer = await respuesta.json();
+    if (Array.isArray(duenosDelServer)) {
+      duenos = duenosDelServer;
+    }
+    if (duenos.length > 0) {
+      const htmlDuenos = duenos
+        .map(
+          (dueno, index) => `<tr>
       <th scope="row">${index}</th>
       <td>${dueno.dni}</td>
       <td>${dueno.nombre}</td>
@@ -27,15 +31,23 @@ function listarDuenos() {
           </div>
       </td>
     </tr>`
-    )
-    .join("");
-  listaDuenos.innerHTML = htmlDuenos;
-  Array.from(document.getElementsByClassName("editar")).forEach(
-    (botonEditar, index) => (botonEditar.onclick = editar(index))
-  );
-  Array.from(document.getElementsByClassName("eliminar")).forEach(
-    (botonEliminar, index) => (botonEliminar.onclick = eliminar(index))
-  );
+        )
+        .join("");
+      listaDuenos.innerHTML = htmlDuenos;
+      Array.from(document.getElementsByClassName("editar")).forEach(
+        (botonEditar, index) => (botonEditar.onclick = editar(index))
+      );
+      Array.from(document.getElementsByClassName("eliminar")).forEach(
+        (botonEliminar, index) => (botonEliminar.onclick = eliminar(index))
+      );
+      return;
+    }
+    listaDuenos.innerHTML = `<tr>
+        <td colspan="5" class="lista-vacia">No hay duen@s</td>
+      </tr>`;
+  } catch (error) {
+    throw error
+  }
 }
 
 function enviarDatos(evento) {

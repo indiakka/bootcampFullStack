@@ -44,7 +44,7 @@ async function listarVeterinarias() {
       return;
     }
     listaVeterinarias.innerHTML = `<tr>
-        <td colspan="5" class="lista-vacia">No hay mascotas</td>
+        <td colspan="5" class="lista-vacia">No hay veterinari@s</td>
       </tr>`;
   } catch (error) {
     console.log({ error });
