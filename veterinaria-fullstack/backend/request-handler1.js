@@ -1,42 +1,43 @@
 const url = require("url");
-const StringDecoder = require("string_decoder").StringDecoder;
 const enrutador = require("./enrutador");
+const StringDecoder = require("string_decoder").StringDecoder;
 
 module.exports = (req, res) => {
-  // 1. obtener url desde el objeto request // OK
+  // 1- obtener url desde el objeto request
   const urlActual = req.url;
   const urlParseada = url.parse(urlActual, true);
 
-  // 2. obtener la ruta
+  // 2- obtener la ruta
   const ruta = urlParseada.pathname;
 
-  // 3. quitar slash
+  // 3- quitar slash(/)
   const rutaLimpia = ruta.replace(/^\/+|\/+$/g, "");
 
-  // 3.1 obtener el método http
+  // 3.1-obtener el método
   const metodo = req.method.toLowerCase();
 
-  //3.1.1 dar permisos de CORS escribiendo los headers
+  //3.1.1 dar permisos de CORS escribiendo los header
   res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Headers", "*");
   res.setHeader(
-    "Access-Control-Allow-Methods",
+    "Access-Control-Request-Methods",
     "OPTIONS, GET, PUT, DELETE, POST"
   );
+
   //3.1.2 dar respuesta inmediata cuando el método sea options
-  if (metodo === "options") {
-    res.writeHead(204);
-    res.end();
-    return;
+  if ( metodo === "options" )
+  {
+    res.writeHead( 200 )
+    res.end()
+    return
   }
 
-  // 3.2 obtener variables del query url
+  // 3.2- obtener varaibles del query url
   const { query = {} } = urlParseada;
 
-  // 3.3 obtener headers
+  // 3.3-obtener headers
   const { headers = {} } = req;
 
-  // 3.4 obtener payload, en el caso de haber uno
+  // 3.4 obtener payload, en el caso de haber uno (payload: son paquetes o fragmentos de datos enviados al servidor y a los que normalmente no se puede acceder. Se puede acceder a ellos cuando los decodificamos)
   const decoder = new StringDecoder("utf-8");
   let buffer = ""; //Los búferes almacenan una secuencia de enteros, de forma similar a una matriz en JavaScript.
 
@@ -54,13 +55,14 @@ module.exports = (req, res) => {
       buffer = JSON.parse(buffer);
     }
 
-    //3.4.3 revisar si tiene subrutas en este caso es el indice del array
+    // 3.4.3- revisar si tiene subrutas, en este caso es el indice del array
     if (rutaLimpia.indexOf("/") > -1) {
       // indexOf = contiene
       //separar las rutas
       var [rutaPrincipal, indice] = rutaLimpia.split("/");
     }
-    //3.5 ordenar la data del request
+
+    // 3.5 ordenar la data del request
     const data = {
       indice,
       ruta: rutaPrincipal || rutaLimpia,
@@ -72,25 +74,25 @@ module.exports = (req, res) => {
 
     console.log({ data });
 
-    // 3.6 elegir el manejador dependiendo de la ruta y asignarle función que el enrutador tiene
+    // 3.6- elegir el manejador handler dependiendo de la ruta y asignarle funcion que el enrutador tiene
     let handler;
     if (data.ruta && enrutador[data.ruta] && enrutador[data.ruta][metodo]) {
       handler = enrutador[data.ruta][metodo];
     } else {
       handler = enrutador.noEncontrado;
     }
+
     console.log("handler", handler);
 
-    // 4. ejecutar handler (manejador) para enviar la respuesta
+    // 4- ejecutar handler para enviar respuesta
     if (typeof handler === "function") {
       handler(data, (statusCode = 200, mensaje) => {
         const respuesta = JSON.stringify(mensaje);
-        res.setHeader("Content-Type", "application/json");
+        res.setHeader("Content-Type", "aplication/json");
         res.writeHead(statusCode);
-        // linea donde realmente ya estamos respondiendo a la aplicación cliente
+        // Linea donde realmente ya estamos respondiendo a la aplicación cliente
         res.end(respuesta);
       });
     }
-    // respuestas según la ruta
   });
 };

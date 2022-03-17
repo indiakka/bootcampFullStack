@@ -7,7 +7,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1,
             shrink-to-fit=no"
-    />
+    /> 
 
     <!-- Bootstrap CSS -->
     <link
@@ -24,7 +24,7 @@
       rel="stylesheet"
       href="https://use.fontawesome.com/releases/v5.13.0/css/v4-shims.css"
     />
-    <link rel="stylesheet" href="/veterinaria/css/styles.css" />
+    <link rel="stylesheet" href="./css/styles.css" />
 
     <title>VET Web</title>
   </head>
@@ -51,7 +51,7 @@
             <li class="nav-item active">
               <a
                 class="nav-link"
-                href="/veterinaria-fullstack/frontend/index.html"
+                href="frontend/index.html"
                 >Mascotas<span class="sr-only">(current)</span></a
               >
             </li>
@@ -86,21 +86,34 @@
       <!-- fin NAV -->
       <div class="actions-menu">
         <h1>Veterinari@s</h1>
-        <button
-          type="button"
-          class="btn btn-primary"
-          data-toggle="modal"
-          data-target="#exampleModalCenter"
-        >
-          Nueva
-        </button>
+        <div class="actions-menu-content">
+          <button
+            type="button"
+            class="btn btn-primary"
+            data-toggle="modal"
+            data-target="#exampleModalCenter"
+          >
+            Nuevo
+          </button>
+          <div class="alert alert-danger alert-dismissible" role="alert">
+            <strong>Oops!</strong> Algo hicimos mal, por favor vuelve a
+            intentarlo!.
+            <button
+              type="button"
+              class="close"
+              data-dismiss="alert"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        </div>
       </div>
       <table class="table table-stripped table-hover">
         <thead class="thead-dark">
           <tr>
             <th scope="col">#</th>
-            <th scope="col">Identificación</th>
-            <th scope="col">País</th>
+            <th scope="col">Documento</th>
             <th scope="col">Nombre</th>
             <th scope="col">Apellido</th>
             <th scope="col"></th>
@@ -137,23 +150,12 @@
               <input type="hidden" id="indice" />
               <div class="form-row">
                 <div class="col">
-                  <select class="form-control" id="pais">
-                    <option>País</option>
-                    <option>Colombia</option>
-                    <option>Perú</option>
-                    <option>Ecuador</option>
-                    <option>Bolivia</option>
-                    <option>Venezuela</option>
-                    <option>Chile</option>
-                  </select>
-                </div>
-                <div class="col">
                   <input
                     type="text"
-                    id="identificacion"
-                    name="identificacion"
+                    id="documento"
+                    name="documento"
                     class="form-control"
-                    placeholder="Identificación"
+                    placeholder="Documento"
                   />
                 </div>
               </div>
@@ -224,6 +226,6 @@
       defer
       src="https://use.fontawesome.com/releases/v5.13.0/js/v4-shims.js"
     ></script>
-    <script src="/veterinaria-fullstack/frontend/js/veterinarias.js"></script>
+    <script src="./js/veterinarias.js"></script>
   </body>
 </html>
