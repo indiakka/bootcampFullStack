@@ -13,10 +13,10 @@ module.exports = {
     { nombre: "Naryie", apellido: "Vasquez", documento: "1000666777" },
   ],
   duenos: [
-    { nombre: "Alejandra", apellido: "Ramirez", documento: "12343333890" },
-    { nombre: "Alexandra", apellido: "Fernandez", documento: "4234564321" },
-    { nombre: "Julio", apellido: "Tamayo", documento: "456666777" },
-    { nombre: "Natalia", apellido: "Gonzales", documento: "9000666777" },
+    { nombre: "Alejandra", apellido: "Ramirez", dni: "12343333890" },
+    { nombre: "Alexandra", apellido: "Fernandez", dni: "4234564321" },
+    { nombre: "Julio", apellido: "Tamayo", dni: "456666777" },
+    { nombre: "Natalia", apellido: "Gonzales", dni: "9000666777" },
   ],
   consultas: [
     {
@@ -28,4 +28,4 @@ module.exports = {
       diagnostico: "",
     },
   ],
-}
+};

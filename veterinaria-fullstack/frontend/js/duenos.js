@@ -1,7 +1,6 @@
 const nombre = document.getElementById("nombre");
 const dni = document.getElementById("dni");
 const apellido = document.getElementById("apellido");
-const pais = document.getElementById("pais");
 const indice = document.getElementById("indice");
 const form = document.getElementById("form");
 const btnGuardar = document.getElementById("btn-guardar");
@@ -11,13 +10,11 @@ let duenos = [
   {
     nombre: "Naryie",
     apellido: "Vasquez",
-    pais: "Colombia",
     dni: "1234567890j",
   },
   {
     nombre: "Juan David",
     apellido: "Marín",
-    pais: "Colombia",
     dni: "1234567899k",
   },
 ];
@@ -28,7 +25,6 @@ function listarDuenos() {
       (dueno, index) => `<tr>
       <th scope="row">${index}</th>
       <td>${dueno.dni}</td>
-      <td>${dueno.pais}</td>
       <td>${dueno.nombre}</td>
       <td>${dueno.apellido}</td>
       <td>
@@ -54,7 +50,6 @@ function enviarDatos(evento) {
   const datos = {
     nombre: nombre.value,
     apellido: apellido.value,
-    pais: pais.value,
     dni: dni.value,
   };
   const accion = btnGuardar.innerHTML;
@@ -78,7 +73,6 @@ function editar(index) {
     indice.value = index;
     nombre.value = dueno.nombre;
     apellido.value = dueno.apellido;
-    pais.value = dueno.pais;
     dni.value = dueno.dni;
   };
 }
@@ -87,7 +81,6 @@ function resetModal() {
   indice.value = "";
   nombre.value = "";
   apellido.value = "";
-  pais.value = "";
   dni.value = "";
   btnGuardar.innerHTML = "Crear";
 }
