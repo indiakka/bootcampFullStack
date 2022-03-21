@@ -1,11 +1,16 @@
 const listaConsultas = document.getElementById("lista-consultas");
-const mascota = document.getElementById( "mascota" );
+const mascota = document.getElementById("mascota");
 const veterinaria = document.getElementById("veterinaria");
+const form = document.getElementById("form");
+const btnGuardar = document.getElementById("btn-guardar");
+const indice = document.getElementById("indice");
+const historia = document.getElementById("historia");
+const diagnostico = document.getElementById("diagnostico");
 const url = "http://localhost:5000";
 
 let consultas = [];
 let mascotas = [];
-let veterinarias =[]
+let veterinarias = [];
 
 async function listarConsultas() {
   const entidad = "consultas";
@@ -29,7 +34,7 @@ async function listarConsultas() {
             <td>${consulta.diagnostico}</td>
             <td>
               <div class="btn-group" role="group" aria-label="Basic example">
-                <button type="button" class="btn btn-info">
+                <button class = 'editar' type="button" class="btn btn-info">
                   Editar
                 </button>
               </div>
@@ -41,16 +46,10 @@ async function listarConsultas() {
       Array.from(document.getElementsByClassName("editar")).forEach(
         (botonEditar, index) => (botonEditar.onclick = editar(index))
       );
-      Array.from(document.getElementsByClassName("eliminar")).forEach(
-        (botonEliminar, index) => (botonEliminar.onclick = eliminar(index))
-      );
-      return;
     }
-    listaDuenos.innerHTML = `<tr>
-        <td colspan="5" class="lista-vacia">No hay duen@s</td>
-      </tr>`;
   } catch (error) {
-    throw error;
+    console.log({ error });
+    $(".alert-danger").show();
   }
 }
 
@@ -71,11 +70,12 @@ async function listarMascotas() {
       });
     }
   } catch (error) {
-    throw error;
+    console.log({ error });
+    $(".alert-danger").show();
   }
 }
 
-listarMascotas()
+listarMascotas();
 
 async function listarVeterinarias() {
   const entidad = "veterinarias";
@@ -94,12 +94,12 @@ async function listarVeterinarias() {
       });
     }
   } catch (error) {
-    throw error;
+    console.log({ error });
+    $(".alert-danger").show();
   }
 }
 
-listarVeterinarias() 
-
+listarVeterinarias();
 
 async function enviarDatos(evento) {
   evento.preventDefault();
@@ -110,30 +110,35 @@ async function enviarDatos(evento) {
       fechaCreacion: fechaCreacion.value,
       fechaEdicion: fechaEdicion.value,
       historia: historia.value,
-      diagnostico: diagnositco.value,
+      diagnostico: diagnostico.value,
     };
-    const accion = btnGuardar.innerHTML;
-    let urlEnvio = url;
-    let method = "POST";
-    if (accion === "Editar") {
-      urlEnvio += `/${indice.value}`; //concatena urlenvio + indice.value
-      method = "PUT";
+    if (validar(datos) === true) {
+      const accion = btnGuardar.innerHTML;
+      let urlEnvio = url;
+      let method = "POST";
+      if (accion === "Editar") {
+        urlEnvio += `/${indice.value}`; //concatena urlenvio + indice.value
+        method = "PUT";
+      }
+      const respuesta = await fetch(urlEnvio, {
+        method,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(datos),
+        mode: "cors",
+      });
+      if (respuesta.ok) {
+        listarConsultas();
+        resetModal();
+      }
+      formulario.classList.add("was-validated");
+      return;
     }
-    const respuesta = await fetch(urlEnvio, {
-      method,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(datos),
-      mode: "cors",
-    });
-    if (respuesta.ok) {
-      listarConsultas();
-      resetModal();
-    }
+    $(".alert-warning").show();
   } catch (error) {
     console.log({ error });
-    $(".alert").show();
+    $(".alert-danger").show();
   }
 }
 
@@ -143,43 +148,46 @@ function editar(index) {
     $("#exampleModalCenter").modal("toggle");
     const consulta = consultas[index];
     indice.value = index;
-    mascota.value = consulta.mascota;
-    veterinaria.value = consulta.veterinaria;
-    fechaCreacion.value = consulta.fechaCreacion;
-    fechaEdicion.value = consulta.fechaEdicion;
+    mascota.value = consulta.mascota.id;
+    veterinaria.value = consulta.veterinaria.id;
     historia.value = consulta.historia;
-    diagnostico.value = consulta.diagnositco;
+    diagnostico.value = consulta.diagnostico;
   };
 }
 
 function resetModal() {
-  indice.value = "";
-  (mascota.value = ""),
-    (veterinaria.value = ""),
-    (fechaCreacion.value = ""),
-    (fechaEdicion.value = ""),
-    (historia.value = ""),
-    (diagnositco.value = ""),
-    (btnGuardar.innerHTML = "Crear");
-}
-
-function eliminar(index) {
-  const urlEnvio = `${url}/${index}`;
-  return async function clickEnEliminar() {
-    try {
-      const respuesta = await fetch(urlEnvio, {
-        method: "DELETE",
-        mode: "cors",
-      });
-      if (respuesta.ok) {
-        listarConsultas();
-      }
-    } catch (error) {
-      console.log({ error });
-      $(".alert").show();
+  btnGuardar.innerHTML = "Crear";
+  [indice, mascota, veterinaria, historia, diagnostico].forEach(
+    (inputActual) => {
+      inputActual.value = "";
+      inputActual.classList.remove("is-invalid");
+      inputActual.classList.remove("is-valid");
     }
-  };
+  );
+  $(".alert-warning").hide();
+  $("#exampleModalCenter").modal("toggle");
+}
+/* modal('toggle) cambia el estado de la modal 
+si está oculta la pone visible, y al revés */
+
+function validar(datos) {
+  if (typeof datos !== "object") return false;
+  let respuesta = true;
+  for (let llave in datos) {
+    if (datos[llave].length === 0) {
+      document.getElementById(llave).classList.add("is-invalid");
+      respuesta = false;
+    } else {
+      document.getElementById(llave).classList.remove("is-invalid");
+      document.getElementById(llave).classList.add("is-valid");
+    }
+  }
+  if (respuesta === true) $(".alert-warning").hide();
+  return respuesta;
 }
 
-form.onsubmit = enviarDatos;
 btnGuardar.onclick = enviarDatos;
+
+listarMascotas();
+listarConsultas();
+listarVeterinarias();

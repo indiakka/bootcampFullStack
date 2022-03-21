@@ -74,16 +74,18 @@
       </nav>
 
       <div class="actions-menu">
-        <button
-          type="button"
-          class="btn btn-primary"
-          data-toggle="modal"
-          data-target="#exampleModalCenter"
-        >
-          Nuevo
-        </button>
-      </div>
-
+            <div class="actions-menu-content">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+                    Nueva
+                </button>
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    <strong>Oops!</strong> Algo hicimos mal, por favor vuelve a intentarlo!.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+        </div>
       <table class="table table-hover .thead-dark">
         <thead>
           <tr>
@@ -99,35 +101,30 @@
         <tbody id="lista-consultas"></tbody>
       </table>
     </div>
-    <div
-      class="modal fade"
-      id="exampleModalCenter"
-      tabindex="-1"
-      role="dialog"
-      aria-labelledby="exampleModalCenterTitle"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLongTitle">
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalCenterTitle">
               Nueva Mascota
             </h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <form id="form">
-              <input type="hidden" id="indice" />
-              <div class="form-row">
-                <div class="col">
-                  <select id="mascota" class="form-control">
+           <div class="alert alert-warning alert-dismissible" role="alert">
+                Te faltan datos!
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            
+            <div class="modal-body">
+                <form class="needs-validation" id="formulario">
+                    <input type="hidden" id="indice" />
+                    <div class="form-row">
+                        <div class="col">
+                            <select class="form-control" id="mascota">
                     <option>Seleccione Mascota</option>
                   </select>
                 </div>
@@ -163,10 +160,17 @@
               type="button"
               class="btn btn-secondary"
               data-dismiss="modal"
+              id='cerrar'
             >
-              Close
+              Cerrar
             </button>
-            <button type="button" class="btn btn-primary">Save changes</button>
+            <button
+             type="button" 
+             id="btn-guardar" 
+             class="btn btn-primary"
+             >
+             Guardar
+            </button>
           </div>
         </div>
       </div>
