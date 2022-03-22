@@ -1,0 +1,5 @@
+{
+  "devDependencies": {
+    "reinstall-node-modules": "^2.0.0"
+  }
+}
