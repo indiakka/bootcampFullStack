@@ -5,8 +5,8 @@ const indice = document.getElementById("indice");
 const form = document.getElementById("form");
 const btnGuardar = document.getElementById("btn-guardar");
 const listaMascotas = document.getElementById("lista-mascotas");
-const url = "https://veterinaria-backend-ebon.vercel.app:5000/mascotas";
-//const url = "https://veterinaria-backend.now.sh/mascotas";
+const url = "https://veterinaria-backend-ebon.vercel.app/mascotas";
+
 
 let mascotas = [];
 
