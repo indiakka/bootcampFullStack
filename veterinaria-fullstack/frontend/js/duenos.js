@@ -5,7 +5,7 @@ const indice = document.getElementById("indice");
 const form = document.getElementById("form");
 const btnGuardar = document.getElementById("btn-guardar");
 const listaDuenos = document.getElementById("lista-duenos");
-const url = "http://localhost:5000/duenos";
+const url = "https://veterinaria-backend-ebon.vercel.app:5000/duenos";
 
 let duenos = [];
 
@@ -46,7 +46,7 @@ async function listarDuenos() {
         <td colspan="5" class="lista-vacia">No hay duen@s</td>
       </tr>`;
   } catch (error) {
-    throw error
+    throw error;
   }
 }
 
