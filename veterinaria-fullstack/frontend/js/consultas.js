@@ -79,13 +79,13 @@ listarMascotas();
 async function listarVeterinarias() {
   const entidad = "veterinarias";
   try {
-    const respuesta = fetch(url);
+    const respuesta = await fetch(`${url}/${entidad}`);
     const veterinariasDelServidor = await respuesta.json();
     if (Array.isArray(veterinariasDelServidor)) {
       veterinarias = veterinariasDelServidor;
     }
     if (respuesta.ok) {
-      const htmlVeterinarias = veterinaria.forEach((_veterinaria, indice) => {
+      veterinarias.forEach((_veterinaria, indice) => {
         const optionActual = document.createElement("option");
         optionActual.innerHTML = `${_veterinaria.nombre} ${_veterinaria.apellido}`;
         optionActual.value = indice;
