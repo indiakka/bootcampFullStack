@@ -1,5 +1,5 @@
 const nombre = document.getElementById("nombre");
-const identificacion = document.getElementById("identificacion");
+const documento = document.getElementById("documento");
 const apellido = document.getElementById("apellido");
 const indice = document.getElementById("indice");
 const form = document.getElementById("form");
@@ -122,6 +122,8 @@ function eliminar(index) {
     }
   };
 }
+
+listarVeterinarias();
 
 form.onsubmit = enviarDatos;
 btnGuardar.onclick = enviarDatos;

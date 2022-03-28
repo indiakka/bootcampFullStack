@@ -43,10 +43,12 @@ async function listarDuenos() {
       return;
     }
     listaDuenos.innerHTML = `<tr>
-        <td colspan="5" class="lista-vacia">No hay duen@s</td>
-      </tr>`;
+          <td colspan="5" class="lista-vacia">No hay dueñ@s</td>
+  </tr>`;
   } catch (error) {
-    throw error;
+    console.log({ error });
+    $(".alert").show();
+
   }
 }
 
@@ -120,6 +122,6 @@ function eliminar(index) {
     }
   };
 }
-
+listarDuenos();
 form.onsubmit = enviarDatos;
 btnGuardar.onclick = enviarDatos;

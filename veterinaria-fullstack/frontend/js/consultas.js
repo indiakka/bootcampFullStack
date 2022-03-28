@@ -1,21 +1,22 @@
 const listaConsultas = document.getElementById("lista-consultas");
 const mascota = document.getElementById("mascota");
 const veterinaria = document.getElementById("veterinaria");
-const form = document.getElementById("form");
-const btnGuardar = document.getElementById("btn-guardar");
-const indice = document.getElementById("indice");
 const historia = document.getElementById("historia");
 const diagnostico = document.getElementById("diagnostico");
-const url = "https://veterinaria-backend-ebon.vercel.app";
+const indice = document.getElementById("indice");
+const btnGuardar = document.getElementById("btn-guardar");
+const formulario = document.getElementById("formulario");
 
 let consultas = [];
 let mascotas = [];
 let veterinarias = [];
 
+const url = "https://veterinaria-backend-ebon.vercel.app"
+
 async function listarConsultas() {
   const entidad = "consultas";
   try {
-    const respuesta = fetch(url);
+    const respuesta = await fetch(`${url}/${entidad}`);
     const consultasDelServidor = await respuesta.json();
     if (Array.isArray(consultasDelServidor)) {
       consultas = consultasDelServidor;
@@ -25,14 +26,14 @@ async function listarConsultas() {
         .map(
           (consulta, indice) =>
             `<tr>
-            <th scope="row">${indice}</th>
-            <td>${consulta.mascota.nombre}</td>
-            <td>${consulta.veterinaria.nombre} ${consulta.veterinaria.apellido}</td>
-            <td>${consulta.fechaCreacion}</td>
-            <td>${consulta.fechaEdicion}</td>
-            <td>${consulta.historia}</td>
-            <td>${consulta.diagnostico}</td>
-            <td>
+           <th scope="row">${indice}</th>
+          <td>${consulta.mascota.nombre}</td>
+          <td>${consulta.veterinaria.nombre} ${consulta.veterinaria.apellido}</td>
+          <td>${consulta.diagnostico}</td>
+          <td>${consulta.fechaCreacion}</td>
+          <td>${consulta.fechaEdicion}</td>
+          
+          <td>
               <div class="btn-group" role="group" aria-label="Basic example">
                 <button type="button" class="btn btn-info editar"><i class="fas fa-edit"></i></button> 
               </div>
@@ -54,13 +55,13 @@ async function listarConsultas() {
 async function listarMascotas() {
   const entidad = "mascotas";
   try {
-    const respuesta = fetch(url);
+    const respuesta = await fetch(`${url}/${entidad}`);
     const mascotasDelServidor = await respuesta.json();
     if (Array.isArray(mascotasDelServidor)) {
       mascotas = mascotasDelServidor;
     }
     if (respuesta.ok) {
-      const htmlMascotas = mascotas.forEach((_mascota, indice) => {
+      mascotas.forEach((_mascota, indice) => {
         const optionActual = document.createElement("option");
         optionActual.innerHTML = _mascota.nombre;
         optionActual.value = indice;
@@ -97,25 +98,38 @@ async function listarVeterinarias() {
   }
 }
 
-listarVeterinarias();
+function editar(index) {
+  return function cuandoCliqueo() {
+    btnGuardar.innerHTML = "Editar";
+    $("#exampleModalCenter").modal("toggle");
+    const consulta = consultas[index];
+    indice.value = index;
+    mascota.value = consulta.mascota.id;
+    veterinaria.value = consulta.veterinaria.id;
+    historia.value = consulta.historia;
+    diagnostico.value = consulta.diagnostico;
+  };
+}
 
 async function enviarDatos(evento) {
+  const entidad = "consultas";
+
   evento.preventDefault();
   try {
     const datos = {
       mascota: mascota.value,
       veterinaria: veterinaria.value,
-      fechaCreacion: fechaCreacion.value,
-      fechaEdicion: fechaEdicion.value,
+
       historia: historia.value,
       diagnostico: diagnostico.value,
     };
     if (validar(datos) === true) {
       const accion = btnGuardar.innerHTML;
-      let urlEnvio = url;
+      let urlEnvio = `${url}/${entidad}`;
       let method = "POST";
       if (accion === "Editar") {
-        urlEnvio += `/${indice.value}`; //concatena urlenvio + indice.value
+        urlEnvio += `/${indice.value}`;
+        //concatena urlenvio + indice.value
         method = "PUT";
       }
       const respuesta = await fetch(urlEnvio, {
@@ -138,19 +152,6 @@ async function enviarDatos(evento) {
     console.log({ error });
     $(".alert-danger").show();
   }
-}
-
-function editar(index) {
-  return function cuandoCliqueo() {
-    btnGuardar.innerHTML = "Guardar";
-    $("#exampleModalCenter").modal("toggle");
-    const consulta = consultas[index];
-    indice.value = index;
-    mascota.value = consulta.mascota.id;
-    veterinaria.value = consulta.veterinaria.id;
-    historia.value = consulta.historia;
-    diagnostico.value = consulta.diagnostico;
-  };
 }
 
 function resetModal() {
