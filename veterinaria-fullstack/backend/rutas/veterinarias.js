@@ -7,7 +7,7 @@ module.exports = function veterinariasHandler(veterinarias) {
           return callback(200, veterinarias[data.indice]);
         }
         return callback(404, {
-          mensaje: `veterinari@s con indice ${data.indice} no encontrada`,
+          mensaje: `veterinaria con indice ${data.indice} no encontrada`,
         }); // poniendo `` es un literal
       }
       callback(200, veterinarias);
@@ -23,7 +23,7 @@ module.exports = function veterinariasHandler(veterinarias) {
           return callback(200, veterinarias[data.indice]);
         }
         return callback(404, {
-          mensaje: `veterinari@s con indice ${data.indice} no encontrada`,
+          mensaje: `veterinaria con indice ${data.indice} no encontrada`,
         });
       }
       callback(400, { mensaje: "indice no enviado" });
@@ -36,14 +36,14 @@ module.exports = function veterinariasHandler(veterinarias) {
            filtrando que el indice pasado anteriormente no esté en él. Ya que será
            el que se va a eliminar */
           veterinarias = veterinarias.filter(
-            (_veterinarias, indice) => indice != data.indice
+            (_veterinaria, indice) => indice != data.indice
           ); // la _ indica que puede que se use o no esa variable
           return callback(204, {
             mensaje: `elemento con indice ${data.indice} eliminado`,
           });
         }
         return callback(404, {
-          mensaje: `veterinari@s con indice ${data.indice} no encontrada`,
+          mensaje: `veterinaria con indice ${data.indice} no encontrada`,
         });
       }
       callback(400, { mensaje: "indice no enviado" });
