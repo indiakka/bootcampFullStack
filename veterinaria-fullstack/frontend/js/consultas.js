@@ -6,7 +6,7 @@ const btnGuardar = document.getElementById("btn-guardar");
 const indice = document.getElementById("indice");
 const historia = document.getElementById("historia");
 const diagnostico = document.getElementById("diagnostico");
-const url = "https://veterinaria-backend-ebon.vercel.app/consultas";
+const url = "https://veterinaria-backend-ebon.vercel.app";
 
 let consultas = [];
 let mascotas = [];
