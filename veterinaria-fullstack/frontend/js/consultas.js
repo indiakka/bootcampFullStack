@@ -11,7 +11,7 @@ let consultas = [];
 let mascotas = [];
 let veterinarias = [];
 
-const url = "https://veterinaria-backend-ebon.vercel.app"
+const url = "https://veterinaria-backend-ebon.vercel.app";
 
 async function listarConsultas() {
   const entidad = "consultas";
@@ -30,6 +30,7 @@ async function listarConsultas() {
           <td>${consulta.mascota.nombre}</td>
           <td>${consulta.veterinaria.nombre} ${consulta.veterinaria.apellido}</td>
           <td>${consulta.diagnostico}</td>
+          <td>${consulta.historia}</td>
           <td>${consulta.fechaCreacion}</td>
           <td>${consulta.fechaEdicion}</td>
           
