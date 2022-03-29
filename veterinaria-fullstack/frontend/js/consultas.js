@@ -36,7 +36,8 @@ async function listarConsultas() {
           <td>
               <div class="btn-group" role="group" aria-label="Basic example">
                 <button type="button" class="btn btn-info editar"><i class="fas fa-edit"></i></button> 
-              </div>
+              <button type="button" class="btn btn-danger eliminar"><i class="far fa-trash-alt"></i></button>
+                </div>
             </td>
           </tr>`
         )
